@@ -25,7 +25,7 @@ if (fs.existsSync(`${__dirname}/data.json`)) {
 }
 
 const server = app.listen(3987);
-const wsServer = new ws.Server({ server: server, path: '/api/ws' });
+const wsServer = new ws.WebSocketServer({ server: server, path: '/api/ws' });
 
 app.use('/maps', (req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
@@ -100,6 +100,7 @@ app.post('/updateorders', upload.single('image'), async (req, res) => {
 });
 
 wsServer.on('connection', (socket) => {
+    console.log("connecting")
     socket.id = socketId++;
     socket.brand = 'unknown';
     socket.lastActivity = Date.now() - (5 * 6 * 1000);
